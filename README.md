@@ -7,6 +7,6 @@ This repo contains Daniel Stewart's assignments the Fall 2019 STAT545A course. A
 
 ## Introduction
 
-I (Daniel) am a graduate student in the Department of Forestry working under Dr. Tara Martin. My reseach is focussed on a recently-arrived invasive plant species in the region and the management actions that may prevent its establishment. I have included a photo of my Research Assistant and I (bottom left). 
+I (Daniel) am a graduate student in the Department of Forestry working under Dr. Tara Martin. My reseach is focussed on a recently-arrived invasive plant species in the region (*Typha x glauca*) and the management actions that may prevent its establishment. I have included a photo of my Research Assistant and I from this past summer's field campaign (bottom left). 
 
 ![Selfie](Photo.jpg)

@@ -1,11 +1,8 @@
 ---
-title: "Exercise 2: Assignment 1"
+title: "Assignment 1: Exercise 2"
 author: "Daniel Stewart"
 date: "16 September 2019"
-output: 
-  html_document:
-    theme: cerulean
-    keep md: true
+output: github_document
 ---
 
 ## Loading Libraries
@@ -14,12 +11,13 @@ library(rmarkdown)
 library(gapminder)
 
 ```
-```
-## Exploring the gapminder dataset with various functions
+## Determining the number of columns in the dataset
 ```{r}
 ncol(gapminder)
+```
+## Listing the column names of the dataset
+```{r}
 names(gapminder)
-head(gapminder)
 ```
 
 ## Investigating the mean life expectancy of all countries across all years
@@ -28,8 +26,8 @@ LifeExp <- gapminder$lifeExp
 mean(LifeExp)
 ```
 
-## Looking at the countries included in the data
+## Looking at the countries included in the dataset
 ```{r}
 Countries <-gapminder$country
-Countries
+unique(Countries)
 ```

@@ -10,28 +10,28 @@ output:
     incremental: true
 ---
 
-## Loading Libraries
+## Adding libraries
 ```{r}
 library(rmarkdown)
 library(gapminder)
 
 ```
-## Determining the number of columns in the dataset
+## Number of columns in the dataset
 ```{r}
 ncol(gapminder)
 ```
-## Listing the column names of the dataset
+## List of column names 
 ```{r}
 data.frame(names(gapminder))
 ```
 
-## Investigating the mean life expectancy of all countries across all years 
+## Mean life expectancy of all countries across all years 
 ```{r}
 LifeExp <- gapminder$lifeExp
 mean(LifeExp)
 ```
 
-## Looking at the first 10 countries included in the dataset (ordered alphabetically)
+## The first ten countries of the dataset (ordered alphabetically)
 ```{r}
 Countries <-gapminder$country
 MasterList <-unique(Countries)

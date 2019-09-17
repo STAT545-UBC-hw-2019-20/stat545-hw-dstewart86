@@ -105,7 +105,7 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
-<slide class=""><hgroup><h2>Loading Libraries</h2></hgroup><article  id="loading-libraries" class="smaller ">
+<slide class=""><hgroup><h2>Adding libraries</h2></hgroup><article  id="adding-libraries" class="smaller ">
 
 <pre class = 'prettyprint lang-r'>library(rmarkdown)</pre>
 
@@ -115,13 +115,13 @@ slide:not(.current) .plotly.html-widget{
 
 <pre >## Warning: package &#39;gapminder&#39; was built under R version 3.5.3</pre>
 
-</article></slide><slide class=""><hgroup><h2>Determining the number of columns in the dataset</h2></hgroup><article  id="determining-the-number-of-columns-in-the-dataset" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Number of columns in the dataset</h2></hgroup><article  id="number-of-columns-in-the-dataset" class="smaller ">
 
 <pre class = 'prettyprint lang-r'>ncol(gapminder)</pre>
 
 <pre >## [1] 6</pre>
 
-</article></slide><slide class=""><hgroup><h2>Listing the column names of the dataset</h2></hgroup><article  id="listing-the-column-names-of-the-dataset" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>List of column names</h2></hgroup><article  id="list-of-column-names" class="smaller ">
 
 <pre class = 'prettyprint lang-r'>data.frame(names(gapminder))</pre>
 
@@ -133,14 +133,14 @@ slide:not(.current) .plotly.html-widget{
 ## 5              pop
 ## 6        gdpPercap</pre>
 
-</article></slide><slide class=""><hgroup><h2>Investigating the mean life expectancy of all countries across all years</h2></hgroup><article  id="investigating-the-mean-life-expectancy-of-all-countries-across-all-years" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Mean life expectancy of all countries across all years</h2></hgroup><article  id="mean-life-expectancy-of-all-countries-across-all-years" class="smaller ">
 
 <pre class = 'prettyprint lang-r'>LifeExp &lt;- gapminder$lifeExp
 mean(LifeExp)</pre>
 
 <pre >## [1] 59.47444</pre>
 
-</article></slide><slide class=""><hgroup><h2>Looking at the first 10 countries included in the dataset (ordered alphabetically)</h2></hgroup><article  id="looking-at-the-first-10-countries-included-in-the-dataset-ordered-alphabetically" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>The first ten countries of the dataset (ordered alphabetically)</h2></hgroup><article  id="the-first-ten-countries-of-the-dataset-ordered-alphabetically" class="smaller ">
 
 <pre class = 'prettyprint lang-r'>Countries &lt;-gapminder$country
 MasterList &lt;-unique(Countries)

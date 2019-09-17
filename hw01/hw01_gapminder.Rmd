@@ -15,18 +15,18 @@ library(gapminder)
 ```{r}
 ncol(gapminder)
 ```
-## Listing the column names of the dataset
+## The column names of the dataset
 ```{r}
 names(gapminder)
 ```
 
-## Investigating the mean life expectancy of all countries across all years
+## Mean life expectancy of all countries across all years
 ```{r}
 LifeExp <- gapminder$lifeExp
 mean(LifeExp)
 ```
 
-## Looking at the countries included in the dataset (ordered alphabetically)
+## The first ten countries of the dataset (ordered alphabetically)
 ```{r}
 Countries <-gapminder$country
 MasterList <-unique(Countries)

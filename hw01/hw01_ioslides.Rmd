@@ -1,8 +1,13 @@
 ---
-title: "Assignment 1: Exercise 2"
+title: 'Assignment 1: Exercise 3'
 author: "Daniel Stewart"
-date: "16 September 2019"
-output: github_document
+date: "September 16, 2019"
+output: 
+  ioslides_presentation:
+    transition: slower
+    widescreen: true
+    smaller: true
+    incremental: true
 ---
 
 ## Loading Libraries
@@ -17,16 +22,16 @@ ncol(gapminder)
 ```
 ## Listing the column names of the dataset
 ```{r}
-names(gapminder)
+data.frame(names(gapminder))
 ```
 
-## Investigating the mean life expectancy of all countries across all years
+## Investigating the mean life expectancy of all countries across all years 
 ```{r}
 LifeExp <- gapminder$lifeExp
 mean(LifeExp)
 ```
 
-## Looking at the countries included in the dataset (ordered alphabetically)
+## Looking at the first 10 countries included in the dataset (ordered alphabetically)
 ```{r}
 Countries <-gapminder$country
 MasterList <-unique(Countries)

@@ -8,7 +8,9 @@ output: html_document
 Loading Packages
 ```{r load packages, warning = FALSE}
 library(gapminder)
+library(tidyverse)
 library(dplyr)
+library(ggplot2)
 ```
 
 Exercise 1.1
@@ -35,10 +37,30 @@ gapminder %>%
 
 Exercise 1.4
 ```{r}
-TEST <- gapminder %>%
-  select(country,gdpPercap) 
+gapminder %>%
+  group_by(country) %>%
+  summarise(max(gdpPercap)) 
+```
+Exercise 1.5
+```{r}
+gapminder %>%
+  filter(country == "Canada") %>%
+  select(lifeExp, gdpPercap) %>%
+  ggplot +
+  geom_point(aes(x = gdpPercap, y = lifeExp)) +
+  xlab("GDP Per Capita") +
+  ylab("Life Expectancy") + 
+  scale_x_log10()
+```
+Exercise 2:
 
-  max.col()
+```{r}
+gapminder %>%
+  select(country, pop) %>%
+  summarise(max(pop), min(pop) %>%
+  sort(country)
+  
+            
 ```
 
 

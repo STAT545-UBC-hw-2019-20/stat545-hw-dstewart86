@@ -55,12 +55,34 @@ gapminder %>%
 Exercise 2:
 
 ```{r}
+#Identifying the most extreme values for both variables (range)
 gapminder %>%
   select(country, pop) %>%
-  summarise(max(pop), min(pop) %>%
-  sort(country)
-  
-            
+  summarise(max(pop), min(pop),
+            first(country), last(country)) 
+
+#Creating a list of countries included in the dataset
+gapminder %>%
+  select(country) %>%
+  distinct(country, .keep_all= TRUE)
+
+#Visualizing the population data distribution from 1952-2007
+  ggplot(gapminder) +
+  geom_boxplot (aes(factor(year), pop)) +
+  xlab("Year") +
+  ylab("Population") + 
+  scale_y_log10() 
+
+
+#Visualizing the global increase in population from 1952 - 2007
+ggplot(gapminder, aes(year, pop)) +
+  geom_bar(stat = "identity")  +
+  xlab("Year") +
+  ylab("Global Population") 
+
+
 ```
+ggplot %>
+
 
 

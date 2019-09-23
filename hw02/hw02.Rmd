@@ -6,11 +6,14 @@ output: html_document
 ---
 
 Loading Packages
-```{r load packages, warning = FALSE}
+```{r load packages, warning = FALSE, echo = FALSE}
 library(gapminder)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(tibble)
+library(data.table)
+library(DT)
 ```
 
 Exercise 1.1
@@ -55,6 +58,7 @@ gapminder %>%
 Exercise 2:
 
 ```{r}
+
 #Identifying the most extreme values for both variables (range)
 gapminder %>%
   select(country, pop) %>%
@@ -62,9 +66,9 @@ gapminder %>%
             first(country), last(country)) 
 
 #Creating a list of countries included in the dataset
-gapminder %>%
+datatable(gapminder %>%
   select(country) %>%
-  distinct(country, .keep_all= TRUE)
+  distinct(country, .keep_all= TRUE)) 
 
 #Visualizing the population data distribution from 1952-2007
   ggplot(gapminder) +
@@ -73,16 +77,28 @@ gapminder %>%
   ylab("Population") + 
   scale_y_log10() 
 
-
 #Visualizing the global increase in population from 1952 - 2007
 ggplot(gapminder, aes(year, pop)) +
   geom_bar(stat = "identity")  +
   xlab("Year") +
   ylab("Global Population") 
 
+#Using mutate to calculate the mean population of countries from 1952-2007 (with SD)
+gapminder %>%
+  group_by(year) %>%
+  mutate(meanpop = mean(pop)) %>%
+  mutate(stdevpop = sd(pop)) %>%
+  select(year, meanpop, stdevpop) %>%
+  distinct(year, .keep_all= TRUE) %>%
+  ggplot(gapminder, mapping = aes(year, meanpop)) + 
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin= 0, ymax=meanpop+stdevpop)) +
+  xlab("Year") +
+  ylab("Mean National Population") +
+  scale_y_continuous(limit = c(0,2e+08))
 
 ```
-ggplot %>
+
 
 
 

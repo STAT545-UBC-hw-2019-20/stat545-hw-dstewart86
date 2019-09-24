@@ -5,7 +5,7 @@ date: "September 23, 2019"
 output: html_document
 ---
 
-Loading Packages
+ Loading Packages
 ```{r load packages, warning = FALSE, echo = FALSE}
 library(gapminder)
 library(tidyverse)
@@ -13,8 +13,11 @@ library(dplyr)
 library(ggplot2)
 library(tibble)
 library(data.table)
-library(DT)
+library(DT) #note that I could not export to git_document due to DT 
+library(datasets)
 ```
+
+#Exercise 1
 
 Exercise 1.1
 ```{r}
@@ -55,7 +58,8 @@ gapminder %>%
   ylab("Life Expectancy") + 
   scale_x_log10()
 ```
-Exercise 2:
+
+#Exercise 2
 
 ```{r}
 
@@ -65,40 +69,59 @@ gapminder %>%
   summarise(max(pop), min(pop),
             first(country), last(country)) 
 
-#Creating a list of countries included in the dataset
+#Creating a list of countries included in the dataset (Nominal range)
 datatable(gapminder %>%
   select(country) %>%
   distinct(country, .keep_all= TRUE)) 
 
-#Visualizing the population data distribution from 1952-2007
+#Visualizing the population data distribution from 1952-2007 (spread, distribution)
   ggplot(gapminder) +
   geom_boxplot (aes(factor(year), pop)) +
   xlab("Year") +
   ylab("Population") + 
   scale_y_log10() 
 
-#Visualizing the global increase in population from 1952 - 2007
+#Visualizing the global increase in population from 1952 - 2007 (yearly global change)
 ggplot(gapminder, aes(year, pop)) +
   geom_bar(stat = "identity")  +
   xlab("Year") +
   ylab("Global Population") 
 
-#Using mutate to calculate the mean population of countries from 1952-2007 (with SD)
-gapminder %>%
-  group_by(year) %>%
-  mutate(meanpop = mean(pop)) %>%
-  mutate(stdevpop = sd(pop)) %>%
-  select(year, meanpop, stdevpop) %>%
-  distinct(year, .keep_all= TRUE) %>%
-  ggplot(gapminder, mapping = aes(year, meanpop)) + 
-  geom_bar(stat = "identity") +
-  geom_errorbar(aes(ymin= 0, ymax=meanpop+stdevpop)) +
-  xlab("Year") +
-  ylab("Mean National Population") +
-  scale_y_continuous(limit = c(0,2e+08))
 
 ```
 
+#Exercise 3
+
+Viewing data before plot creation
+```{r}
+library(datasets) #loading and assessing data prior to plot creation
+data(iris)
+summary(iris)
+```
+
+Plot 1: Looking at relationships between sepal length and pedal length of multiple iris species
+```{r}
+iris %>%
+  ggplot() +
+  geom_point (aes(Sepal.Length, Petal.Length, color=Species)) +
+  xlab("Iris Species") +
+  ylab("Petal Width") +
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+```
+
+
+
+Plot 2: Comparing petal widths of multiple iris species
+```{r}
+iris %>%
+  ggplot() +
+  geom_boxplot (aes(Species, Petal.Width)) +
+  xlab("Iris Species") +
+  ylab("Petal Width") + 
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+```
 
 
 

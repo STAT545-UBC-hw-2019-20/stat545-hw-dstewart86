@@ -4,6 +4,7 @@ author: "Daniel Stewart"
 date: "September 30, 2019"
 output: html_document
 ---
+Note: All data used in this exercise come from the gapminder dataset included in R Statistical software.
 
 ### Installed Packages:
 
@@ -34,8 +35,7 @@ suppressPackageStartupMessages(library(ggplot2))
 
 ### Task 2
 
-The table produced in this section lists the minimum and maximum GDP per capita for each continent between 1952-2007.  The plot will visualize (1) the minimum and maximum GDP per capita for each continent (described in the table above) and (2) the distribution of data, by displaying each data point. Data were acquired from the "gapminder" dataset included with R Statistical Software.
-
+The table produced in this section lists the minimum and maximum GDP per capita for each continent between 1952-2007.  The jitter plot visualizes (1) the minimum and maximum GDP per capita for each continent (described in the table above) and (2) the distribution of data, by displaying each data point. 
 
 ```{r,}
 gapminder %>% 
@@ -54,7 +54,7 @@ gapminder %>%
 ```
 
 ### Task 3
-To better understand the spread of GDP per capita data , I first produced a summary table containing the mean, standard deviation, minimum, and maximum values for each continent. To visualize this spread, I opted to use boxplots, as they display the minimum, maximum, 25% quartile, 75% quartile and median of the data. Data were acquired from the "gapminder" dataset included with R Statistical Software.
+To investigate the spread of GDP per capita data I first produced a summary table containing the mean, standard deviation, minimum, and maximum values for each continent. I opted to use boxplots for visualizing these data, as they display the minimum, maximum, 25% quartile, 75% quartile and median of the data. 
 
 
 ```{r}
@@ -74,6 +74,13 @@ gapminder %>%
 ```
 
 ### Task 5
+To investigate continent-scale changes in life expectancy I followed two approaches. First, I calculated the mean change in life expectancy per continent by comparing the mean life expectancy of year 'x' with that of year 'x-5'. These are described in the first table and first plot below. 
+
+The latter table and plot represent the second approach, where I simply calculated the mean life expectancy of each continent.
+
+I opted to keep both plots because I believe they compliment each other well. Mean change in life expectancy describes subtle changes in life expectancy with greater detail, while mean life expectancy is better for comparing/contrasting the continents.
+
+
 ```{r}
 CHANGEDATA <- (gapminder %>%
   arrange(country, year) %>%
@@ -90,7 +97,7 @@ ggplot(CHANGEDATA, aes(CHANGEDATA$year, CHANGEDATA$`mean(lifeExpChange)`)) + #I 
   theme_bw() + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   xlab("Year") + ylab("Mean Change in Life Expectancy") +
-  labs(colour='Continent') 
+  labs(colour='Continent') #something to consider is how to integrate variance into a lineplot
 
  MEANDATA <- (gapminder %>%
   arrange(country, year) %>%
@@ -98,13 +105,13 @@ ggplot(CHANGEDATA, aes(CHANGEDATA$year, CHANGEDATA$`mean(lifeExpChange)`)) + #I 
   summarize(mean(lifeExp)) %>%
   drop_na())
  
- datatable(CHANGEDATA) 
+ datatable(MEANDATA) 
 
 ggplot(data=MEANDATA, aes(MEANDATA$year, MEANDATA$`mean(lifeExp)`)) + 
   geom_line(aes(colour = MEANDATA$continent)) +
   theme_bw() + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-  xlab("Year") + ylab("Mean Change in Life Expectancy") +
+  xlab("Year") + ylab("Mean Life Expectancy") +
   labs(colour='Continent') 
 
 ```

@@ -5,26 +5,107 @@ date: "September 30, 2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+### Installed Packages:
+
+install.packages("tidyverse")
+install.packages("gapminder")
+install.packages("DT")
+install.packages("ggplot2")
+install.packages("ggridges")
+install.packages("scales")
+install.packages("tidyr")
+
+```{r allow errors, echo = FALSE}
+knitr::opts_chunk$set(error = TRUE, warning = FALSE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+Loading Packages
+```{r}
+suppressPackageStartupMessages(library(tsibble))
+suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(scales))
+suppressPackageStartupMessages(library(ggridges))
+suppressPackageStartupMessages(library(gapminder))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(DT))
+suppressPackageStartupMessages(library(ggplot2))
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+### Task 2
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+The table produced in this section lists the minimum and maximum GDP per capita for each continent between 1952-2007.  The plot will visualize (1) the minimum and maximum GDP per capita for each continent (described in the table above) and (2) the distribution of data, by displaying each data point. Data were acquired from the "gapminder" dataset included with R Statistical Software.
+
+
+```{r,}
+gapminder %>% 
+  group_by(continent) %>% #initially I was grouping by continent and gddPercap, which conflicted with subsequent lines
+  summarize(Min_GDPPercap = min(gdpPercap),
+            Max_GDPPercap = max(gdpPercap)) %>%
+            datatable() %>%
+            formatRound(columns = c('Min_GDPPercap', 'Max_GDPPercap'))
+
+ ggplot(gapminder,aes(x = continent, y = gdpPercap)) + 
+  geom_jitter(alpha = 0.3) + #using code taught in lesson 8 of STAT545
+  theme_bw() +
+  xlab("Continent") + ylab("GDP Per Capita") +
+  scale_y_continuous(breaks = c(0, 25000, 50000, 75000, 100000, 125000), label = comma) #notice how this code differs from the log scale in Task 2B
+  
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+### Task 3
+To better understand the spread of GDP per capita data , I first produced a summary table containing the mean, standard deviation, minimum, and maximum values for each continent. To visualize this spread, I opted to use boxplots, as they display the minimum, maximum, 25% quartile, 75% quartile and median of the data. Data were acquired from the "gapminder" dataset included with R Statistical Software.
+
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarize(meanGDP = mean(gdpPercap), stdev = sd(gdpPercap), 
+  min = min(gdpPercap), max = max(gdpPercap)) %>%
+  datatable()
+
+
+  ggplot(gapminder, aes(x = continent, y = gdpPercap)) +
+  geom_boxplot() +
+  theme_bw() + #removes grey background
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  xlab("Continent") + ylab("GDP Per Capita") +
+  scale_y_log10(breaks = c(0, 1000, 10000, 100000), label = comma) 
+```
+
+### Task 5
+```{r}
+CHANGEDATA <- (gapminder %>%
+  arrange(country, year) %>%
+  group_by(country) %>%
+  mutate(lifeExpChange = lifeExp - lag(lifeExp)) %>% #this idea came from lecture 7 in STAT545
+  group_by(continent, year) %>%
+  summarize(mean(lifeExpChange)) %>%
+  drop_na())
+
+datatable(CHANGEDATA) 
+
+ggplot(CHANGEDATA, aes(CHANGEDATA$year, CHANGEDATA$`mean(lifeExpChange)`)) + #I used the assignment operator to create a new DF relevant to the research question
+  geom_line(aes(colour = CHANGEDATA$continent)) +
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  xlab("Year") + ylab("Mean Change in Life Expectancy") +
+  labs(colour='Continent') 
+
+ MEANDATA <- (gapminder %>%
+  arrange(country, year) %>%
+  group_by(continent, year) %>%
+  summarize(mean(lifeExp)) %>%
+  drop_na())
+ 
+ datatable(CHANGEDATA) 
+
+ggplot(data=MEANDATA, aes(MEANDATA$year, MEANDATA$`mean(lifeExp)`)) + 
+  geom_line(aes(colour = MEANDATA$continent)) +
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  xlab("Year") + ylab("Mean Change in Life Expectancy") +
+  labs(colour='Continent') 
+
+```
+

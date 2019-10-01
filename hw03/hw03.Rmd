@@ -20,8 +20,7 @@ install.packages("tidyr")
 knitr::opts_chunk$set(error = TRUE, warning = FALSE)
 ```
 
-Loading Packages
-```{r}
+```{r setup, include=FALSE, message=F}
 suppressPackageStartupMessages(library(tsibble))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(scales))
@@ -105,7 +104,13 @@ ggplot(CHANGEDATA, aes(CHANGEDATA$year, CHANGEDATA$`mean(lifeExpChange)`)) + #I 
   summarize(mean(lifeExp)) %>%
   drop_na())
  
- datatable(MEANDATA) 
+ STDEV <- (gapminder %>%
+  arrange(country, year) %>%
+  group_by(continent, year) %>%
+  summarize(sd(lifeExp)) %>%
+  drop_na())
+ 
+ datatable(MEANDATA, STDEV) 
 
 ggplot(data=MEANDATA, aes(MEANDATA$year, MEANDATA$`mean(lifeExp)`)) + 
   geom_line(aes(colour = MEANDATA$continent)) +
@@ -113,6 +118,7 @@ ggplot(data=MEANDATA, aes(MEANDATA$year, MEANDATA$`mean(lifeExp)`)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   xlab("Year") + ylab("Mean Life Expectancy") +
   labs(colour='Continent') 
+
 
 ```
 

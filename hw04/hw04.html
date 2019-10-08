@@ -188,10 +188,7 @@ summary {
 <ul>
 <li>install.packages(“tidyverse”)</li>
 <li>install.packages(“gapminder”)</li>
-<li>install.packages(“DT”)</li>
 <li>install.packages(“ggplot2”)</li>
-<li>install.packages(“ggridges”)</li>
-<li>install.packages(“scales”)</li>
 <li>install.packages(“tidyr”)</li>
 <li>install.packages(“readr”)</li>
 </ul>
@@ -337,6 +334,94 @@ Relengthened_multivariate %&gt;%
 ## # ... with 26 more rows</code></pre>
 <pre class="r"><code>#This code returns it to its original format</code></pre>
 </div>
+</div>
+</div>
+<div id="exercise-3-table-joins" class="section level2">
+<h2>Exercise 3: Table Joins</h2>
+<pre class="r"><code>guest &lt;- read_csv(&quot;https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   party = col_double(),
+##   name = col_character(),
+##   meal_wedding = col_character(),
+##   meal_brunch = col_character(),
+##   attendance_wedding = col_character(),
+##   attendance_brunch = col_character(),
+##   attendance_golf = col_character()
+## )</code></pre>
+<pre class="r"><code>email &lt;- read_csv(&quot;https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv&quot;) %&gt;%
+  rename(name = guest)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   guest = col_character(),
+##   email = col_character()
+## )</code></pre>
+<pre class="r"><code>#I had to rename the &quot;guest&quot; column to make it compatible with guest tribble</code></pre>
+<div id="part-3.1-adding-an-e-mail-column-to-the-guest-tibble" class="section level4">
+<h4>Part 3.1: Adding an e-mail column to the guest tibble</h4>
+<pre class="r"><code>emailjoin &lt;- guest %&gt;% 
+  full_join(email, by = c(&quot;name&quot;))
+emailjoin</code></pre>
+<pre><code>## # A tibble: 40 x 8
+##    party name  meal_wedding meal_brunch attendance_wedd~ attendance_brun~
+##    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;           
+##  1     1 Somm~ PENDING      PENDING     PENDING          PENDING         
+##  2     1 Phil~ vegetarian   Menu C      CONFIRMED        CONFIRMED       
+##  3     1 Blan~ chicken      Menu A      CONFIRMED        CONFIRMED       
+##  4     1 Emaa~ PENDING      PENDING     PENDING          PENDING         
+##  5     2 Blai~ chicken      Menu C      CONFIRMED        CONFIRMED       
+##  6     2 Nige~ &lt;NA&gt;         &lt;NA&gt;        CANCELLED        CANCELLED       
+##  7     3 Sine~ PENDING      PENDING     PENDING          PENDING         
+##  8     4 Ayra~ vegetarian   Menu B      PENDING          PENDING         
+##  9     5 Atla~ PENDING      PENDING     PENDING          PENDING         
+## 10     5 Denz~ fish         Menu B      CONFIRMED        CONFIRMED       
+## # ... with 30 more rows, and 2 more variables: attendance_golf &lt;chr&gt;,
+## #   email &lt;chr&gt;</code></pre>
+</div>
+<div id="part-3.2-people-not-on-the-guest-list-who-we-have-emails-for" class="section level4">
+<h4>Part 3.2: People not on the guest list who we have emails for</h4>
+<pre class="r"><code>emailjoin %&gt;%
+  filter(is.na(party)) %&gt;%
+  filter(!is.na(email))</code></pre>
+<pre><code>## # A tibble: 10 x 8
+##    party name  meal_wedding meal_brunch attendance_wedd~ attendance_brun~
+##    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;           
+##  1    NA Somm~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  2    NA Blai~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  3    NA Jole~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  4    NA Amay~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  5    NA Dais~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  6    NA Rosa~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  7    NA Huma~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  8    NA Eddi~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  9    NA Turn~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+## 10    NA Albe~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+## # ... with 2 more variables: attendance_golf &lt;chr&gt;, email &lt;chr&gt;</code></pre>
+<pre class="r"><code>#I interpreted NA values across all attendance fields as == not being on the guest list.</code></pre>
+</div>
+<div id="part-3.3-guestlist-that-includes-everyone-we-have-emails-for" class="section level4">
+<h4>Part 3.3: Guestlist that includes everyone we have emails for</h4>
+<pre class="r"><code>masteremail &lt;- emailjoin %&gt;% 
+  semi_join(email, by =&quot;name&quot;)
+  masteremail</code></pre>
+<pre><code>## # A tibble: 14 x 8
+##    party name  meal_wedding meal_brunch attendance_wedd~ attendance_brun~
+##    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;           
+##  1     3 Sine~ PENDING      PENDING     PENDING          PENDING         
+##  2     4 Ayra~ vegetarian   Menu B      PENDING          PENDING         
+##  3     8 Ciar~ PENDING      Menu A      PENDING          PENDING         
+##  4     9 Dian~ vegetarian   Menu C      CONFIRMED        CONFIRMED       
+##  5    NA Somm~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  6    NA Blai~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  7    NA Jole~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  8    NA Amay~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+##  9    NA Dais~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+## 10    NA Rosa~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+## 11    NA Huma~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+## 12    NA Eddi~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+## 13    NA Turn~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+## 14    NA Albe~ &lt;NA&gt;         &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;            
+## # ... with 2 more variables: attendance_golf &lt;chr&gt;, email &lt;chr&gt;</code></pre>
 </div>
 </div>
 

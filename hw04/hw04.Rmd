@@ -13,21 +13,14 @@ Installed Packages:
 
   + install.packages("tidyverse")
   + install.packages("gapminder")
-  + install.packages("DT")
   + install.packages("ggplot2")
-  + install.packages("ggridges")
-  + install.packages("scales")
   + install.packages("tidyr")
   + install.packages("readr")
 
 ```{r setup, include=FALSE, message=F}
-suppressPackageStartupMessages(library(tsibble))
 suppressPackageStartupMessages(library(tidyr))
-suppressPackageStartupMessages(library(scales))
-suppressPackageStartupMessages(library(ggridges))
 suppressPackageStartupMessages(library(gapminder))
 suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(readr))
 ```
@@ -105,5 +98,37 @@ Relengthened_multivariate %>%
 
 ```
 
+## Exercise 3: Table Joins
+```{r}
+guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv")
+email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv") %>%
+  rename(name = guest)
+#I had to rename the "guest" column to make it compatible with guest tribble
+```
+
+
+#### Part 3.1: Adding an e-mail column to the guest tibble 
+```{r}
+emailjoin <- guest %>% 
+  full_join(email, by = c("name"))
+emailjoin
+```
+#### Part 3.2: People not on the guest list who we have emails for 
+```{r}
+emailjoin %>%
+  filter(is.na(party)) %>%
+  filter(!is.na(email))
+
+#I interpreted NA values across all attendance fields as == not being on the guest list.
+
+
+```
+#### Part 3.3: Guestlist that includes everyone we have emails for 
+
+```{r}
+masteremail <- emailjoin %>% 
+  semi_join(email, by ="name")
+  masteremail
+```
 
 

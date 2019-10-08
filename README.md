@@ -16,5 +16,5 @@ I (Daniel) am a graduate student in the Department of Forestry. My reseach is fo
 Assignment 3
 https://stat545-ubc-hw-2019-20.github.io/stat545-hw-dstewart86/hw03/hw03.html
 
-##Assignment 4:
+Assignment 4:
 https://stat545-ubc-hw-2019-20.github.io/stat545-hw-dstewart86/hw04/hw04.html

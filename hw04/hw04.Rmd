@@ -43,9 +43,11 @@ Scandinavian_LifeExp <- gapminder %>%
   names_from = country,
   values_from = lifeExp)
   Scandinavian_LifeExp
+  
+#Note: in the filtering process I had to identify the "country" field for each country.
 ```
 
-### Part 2: Scatterplot of Scandinavian Country Life Expectancies (1952-2007)
+#### Part 2: Scatterplot of Scandinavian Country Life Expectancies (1952-2007)
 ```{r}
 PlotData <- reshape2::melt(Scandinavian_LifeExp, id.vars = "year") %>%
   rename(Country = variable)
@@ -60,4 +62,48 @@ ggplot(PlotData, aes(year, value, col=Country)) +
 
 #I tried to plot the outputs of Part 1 directly, but it was extremely difficult due to the multiple columns. I initially solved this by using "geom_point" separately for each country, but this made it impossible to generate an appropriate legend. In the end I opted to melt the columns into one, allowing me to make these plots in a satisfactory manner. 
 ```
+#### Part 3: Relengthened Data
+
+```{r}
+Relengthened_data <- Scandinavian_LifeExp %>%
+  pivot_longer(cols = c(Denmark, Finland, Iceland, Sweden),
+               names_to = "country",
+               values_to = "life_expectancy")
+Relengthened_data
+```
+
+## Exercise 2: Multivariate Data Reshaping
+### Multivariate Option 1
+
+#### Part 1: Life Expectancy and GDP per Capita of Three Randomly-Selected Countries
+```{r}
+  widened_multivariate <- gapminder %>%
+  filter(country == "Eritrea" | country == "Jamaica" | country == "Vietnam") %>%
+  pivot_wider(id_cols = year,
+  names_from = country,
+  values_from = c(lifeExp, gdpPercap))
+  widened_multivariate
+```
+#### Part 2: Relengthened Data
+```{r}
+Relengthened_multivariate <- widened_multivariate %>%
+  pivot_longer(cols = c(-year),
+               names_to = c("metric", "country"),
+               names_sep = ("_"),
+              values_to = "measurement") 
+
+Relengthened_multivariate
+#At this stage lifeexp and gdpPercap are combined under the "metric" column. This is as "narrow" as I could make it. 
+
+Relengthened_multivariate %>%
+  pivot_wider(names_from = metric,
+              values_from = measurement)
+
+#This code returns it to its original format
+
+
+
+```
+
+
 

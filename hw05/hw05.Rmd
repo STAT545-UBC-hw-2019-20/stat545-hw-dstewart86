@@ -1,0 +1,70 @@
+---
+title: "Assignment 5"
+author: "Daniel Stewart"
+date: "October 16, 2019"
+output: html_document
+---
+Installed Packages:
+
+  + install.packages("tidyverse")
+  + install.packages("gapminder")
+  + install.packages("ggplot2")
+  + install.packages("tidyr")
+  + install.packages("readr")
+  
+```{r setup, include=FALSE}
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(forcats))                            
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(gapminder))
+```
+
+## Exercise 1: The Value of here::here Package
+
+This function is a powerful tool for reliably constructing pathways to files based on the current directory at the time the package is loaded. Unlike setwd(), which is fragile to any change in directories, platforms or file names, here::here is flexible and adaptive, capable of locating files using reasonable heuristics.
+
+As a result of this adaptive file search power, it is much easier to use sub-directories within projects, and we can now easily avoid problematic and clunky alternatives (e.g. set(wd), rm(lst = ls()), large directories). We can also move files freely within the project directory without having to change any relative directory. In short, the power of here is that it reduces many of the headaches associated with sharing/moving/renaming data between platforms and devices. 
+
+## Exercise 2: Factor Management
+
+### Factoring 2007 Population Sizes
+```{r}
+gapminder %>% 
+  filter(year == 2007) %>% 
+  mutate(population_level = case_when(pop < 10000000 ~ 'very low',
+                            pop < 50000000~ 'low',
+                            pop < 100000000 ~ 'moderate',
+                            pop < 500000000 ~ 'high',
+                            TRUE ~ 'very high')) %>% 
+  ggplot() + geom_boxplot(aes(x = population_level, y = lifeExp)) +
+  labs(y = "Life Expectancy", x= "Population Size Class") +
+  theme_bw() 
+  
+```
+
+### Alteration of the Previous Code to Re-Order X-Axis
+```{r}
+#this code was adapted from Lecture 12 of Stat 545 
+gapminder %>% 
+  filter(year == 2007) %>% 
+  mutate(population_level = factor(case_when(pop < 10000000 ~ 'very low',
+                            pop < 50000000 ~ 'low',
+                            pop < 100000000 ~ 'moderate',
+                            pop < 500000000 ~ 'high',
+                            TRUE ~ 'very high'),
+                levels = c("very low", "low","moderate", "high","very high"))) %>%
+  ggplot() + geom_boxplot(aes(x = population_level, y = lifeExp)) +
+  labs(y = "Life Expectancy", x= "Population Size Class") +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+
+```
+
+### Gapminder Exercise
+```{r}
+gapminder %>%
+  filter(continent != "Oceania")
+```
+
+

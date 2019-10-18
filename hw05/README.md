@@ -6,4 +6,6 @@ Homework Repo:
 https://stat545-ubc-hw-2019-20.github.io/stat545-hw-dstewart86/
 
 Assignment 5:
-https://stat545-ubc-hw-2019-20.github.io/stat545-hw-dstewart86/hw04/hw05.html
+https://stat545-ubc-hw-2019-20.github.io/stat545-hw-dstewart86/hw05/hw05.html
+
+
